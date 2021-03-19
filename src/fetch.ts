@@ -1,4 +1,4 @@
-import { ServerRequest } from "https://deno.land/std/http/server.ts";
+import {ServerRequest} from "https://deno.land/std/http/server.ts";
 import {deflate} from "https://deno.land/x/denoflate@1.1/mod.ts";
 import {encode64} from "./encoder.ts";
 import {textToBuffer} from "./converter.ts";
@@ -24,10 +24,11 @@ export async function fetchImage(text: string, imageType: 'png' | 'svg') {
     return await response.blob();
 }
 
-export function respondImage(imageData: Uint8Array, mimeType: string, req: ServerRequest) {
+export function respondImage(imageData: Uint8Array, mimeType: string, req: ServerRequest, options: {eTag: string}) {
     const headers = new Headers();
     headers.set("Content-Type", `${mimeType}; charaset=utf-8`);
-    headers.set("Cache-Control", `private, max-age=${60 * 60 * 24}`);
+    headers.set("Cache-Control", "private, max-age=0");
+    headers.set("ETag", options.eTag);
     req.respond({
         headers,
         body: imageData,
