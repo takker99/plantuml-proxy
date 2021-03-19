@@ -1,5 +1,5 @@
 import {ServerRequest} from "https://deno.land/std/http/server.ts";
-import {fetchText, fetchImage, respondImage} from "../src/fetch.ts";
+import {fetchText, fetchImage, respondImage} from "./fetch.ts";
 import {createHash} from "https://deno.land/std@0.90.0/hash/mod.ts";
 
 export default async (req: ServerRequest) => {
