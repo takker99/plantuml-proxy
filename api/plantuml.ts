@@ -1,6 +1,7 @@
 import { createHash } from "../src/deps.ts";
 import { ServerRequest } from "../src/deps_pinned.ts";
-import { fetchImage, fetchText, respondImage } from "../src/fetch.ts";
+import { fetchText } from "../src/fetch.ts";
+import { toPlantUMLURL } from "../src/toPlantUMLURL.ts";
 
 export default async (req: ServerRequest) => {
   const base = `${req.headers.get("x-forwarded-proto")}://${
@@ -40,9 +41,15 @@ export default async (req: ServerRequest) => {
       req.respond({ status: 304 });
       return;
     }
-    const imageData = await fetchImage(text, imageType);
-    const buffer = new Uint8Array(await imageData.arrayBuffer());
-    respondImage(buffer, imageData.type, req, { eTag });
+
+    const headers = new Headers();
+    const path = toPlantUMLURL(text, imageType);
+    console.log(`Go to "${path}"`);
+    headers.set("location", path);
+    req.respond({
+      status: 301,
+      headers,
+    });
   } catch (e) {
     req.respond({ status: 400, body: e.message });
   }
