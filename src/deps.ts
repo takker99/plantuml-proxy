@@ -1,2 +1,2 @@
-export { createHash } from "https://deno.land/std@0.151.0/hash/mod.ts";
+export { createHash } from "https://deno.land/std@0.152.0/hash/mod.ts";
 export { deflate } from "https://deno.land/x/denoflate@1.1/mod.ts";
